@@ -1,24 +1,59 @@
-# README
+# テーブル設計
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## user
+| Column | Type | Options |
+| ------ | ---- | ------- |
+| nickname | string | null: false |
+| email | string | null: false|
+| password | string | null:false |
+| name | string | null: false |
+| name_reading | string | null:false |
+| birthday | string | null: false |
 
-Things you may want to cover:
+### Association
+- has_many :products
+- has_one :address
 
-* Ruby version
+## product
+| Column | Type | Options |
+| ------ | ---- | ------- |
+|	name 	 | string | null: false |
+| price  | integer | null: false |
+| description | text | null: false |
+| genre_id | integer | null: false |
+| status | integer | null: false |
+| delivery_fee | integer | null: false |
+| prefecture | integer | null: false |
+| shipment | integer | null: false |
+| sold_out | boolean | --- |
+| user_id | references | null: false, foreign_key: true |
 
-* System dependencies
+### Association
+- belongs_to :user
+- has_one :order
 
-* Configuration
+## order
+| Column | Type | Options |
+| ------ | ---- | ------- |
+| price  | integer | null: false |
+| addresses_id | references | null: false, foreign_key: true |
+| product_id | references | null: false, foreign_key: true |
 
-* Database creation
+### Association
+- belongs_to :product
+- belongs_to :address
 
-* Database initialization
+## address
+| Column | Type | Options |
+| ------ | ---- | ------- |
+| postal_code | string | null: false |
+| prefecture | integer | null: false |
+| city | string | null:false |
+| house_number | string | null: false |
+| building_name | string | null: false |
+| phone_number | integer | null: false |
+| user_id | references | null: false, foreign_key: true |
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Association
+- has_many :order
+- belongs_to :user
