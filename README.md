@@ -17,6 +17,7 @@
 ## product
 | Column | Type | Options |
 | ------ | ---- | ------- |
+| image	 | string | null: false |
 |	name 	 | string | null: false |
 | price  | integer | null: false |
 | description | text | null: false |
