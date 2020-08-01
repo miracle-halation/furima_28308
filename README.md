@@ -15,7 +15,6 @@
 ### Association
 - has_many :items
 - has_many :orders
-- has_one :address
 
 ## item
 | Column | Type | Options |
@@ -29,23 +28,22 @@
 | delivery_fee_id | integer | null: false |
 | prefecture_id | integer | null: false |
 | shipment_id | integer | null: false |
-| sold_out | boolean | --- |
-| user_id | references | null: false, foreign_key: true |
+| user | references | null: false, foreign_key: true |
+| address | references | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :user
+- belongs_to :address
 - has_one :order
 
 ## order
 | Column | Type | Options |
 | ------ | ---- | ------- |
-| addresses_id | references | null: false, foreign_key: true |
-| item_id | references | null: false, foreign_key: true |
-| user_id | references | null: false, foreign_key: true |
+| item | references | null: false, foreign_key: true |
+| user | references | null: false, foreign_key: true |
 
 ### Association
 - belongs_to :item
-- belongs_to :address
 - belongs_to :user
 
 ## address
@@ -57,8 +55,6 @@
 | house_number | string | null: false |
 | building_name | string | null: false |
 | phone_number | integer | null: false |
-| user_id | references | null: false, foreign_key: true |
 
 ### Association
-- has_many :order
-- belongs_to :user
+- has_many :items
