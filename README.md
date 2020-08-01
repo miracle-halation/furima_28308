@@ -13,11 +13,11 @@
 | birthday | date | null: false |
 
 ### Association
-- has_many :products
+- has_many :items
 - has_many :orders
 - has_one :address
 
-## product
+## item
 | Column | Type | Options |
 | ------ | ---- | ------- |
 | image	 | string | null: false |
@@ -40,11 +40,11 @@
 | Column | Type | Options |
 | ------ | ---- | ------- |
 | addresses_id | references | null: false, foreign_key: true |
-| product_id | references | null: false, foreign_key: true |
+| item_id | references | null: false, foreign_key: true |
 | user_id | references | null: false, foreign_key: true |
 
 ### Association
-- belongs_to :product
+- belongs_to :item
 - belongs_to :address
 - belongs_to :user
 
