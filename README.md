@@ -33,7 +33,7 @@
 
 ### Association
 - belongs_to :user
-- belongs_to :address
+- has_one :address
 - has_one :order
 
 ## order
@@ -55,6 +55,7 @@
 | house_number | string | null: false |
 | building_name | string | null: false |
 | phone_number | integer | null: false |
+| item | references | null: false, foreign_key: true |
 
 ### Association
-- has_many :items
+- belongs_to :items
