@@ -6,13 +6,12 @@ class User < ApplicationRecord
 
   with_options presence: true do
     validates :nickname
-    validates :family_name, format: {with: /\A[ぁ-んァ-ンー-龥]/, message: "is invalid. Input full-width characters."}
-    validates :family_name_reading, format: {with: /\A[ァ-ヶー－]+\z/, message: "is invalid. Input full-width katakana characters."}
-    validates :first_name, format: {with: /\A[ぁ-んァ-ンー-龥]/,message: "is invalid. Input full-width characters."}
-    validates :first_name_reading, format: {with: /\A[ァ-ヶー－]+\z/, message: "is invalid. Input full-width katakana characters."}
+    validates :family_name, format: { with: /\A[ぁ-んァ-ンー-龥]/, message: 'is invalid. Input full-width characters.' }
+    validates :family_name_reading, format: { with: /\A[ァ-ヶー－]+\z/, message: 'is invalid. Input full-width katakana characters.' }
+    validates :first_name, format: { with: /\A[ぁ-んァ-ンー-龥]/, message: 'is invalid. Input full-width characters.' }
+    validates :first_name_reading, format: { with: /\A[ァ-ヶー－]+\z/, message: 'is invalid. Input full-width katakana characters.' }
     validates :birthday
   end
-  validates :email, format: {with: /\A^\S+@\S+\.\S+$\z/, message: "is invalid. Input @ character."}
-  validates :password, length: {minimum: 6}, format: {with: /\A[a-zA-Z0-9]+\z/, message: "is invalid. Input half-width characters."}
-  
+  validates :email, format: { with: /\A^\S+@\S+\.\S+$\z/, message: 'is invalid. Input @ character.' }
+  validates :password, format: { with: /\A[a-zA-Z0-9]+\z/, message: 'is invalid. Input half-width characters.' }
 end
