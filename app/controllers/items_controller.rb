@@ -1,5 +1,6 @@
 class ItemsController < ApplicationController
   before_action :logged_in_user?, only: [:new, :create]
+  before_action :set_item, only: [:show]
   def index
     @items = Item.includes(:order).with_attached_image.order('created_at DESC')
   end
@@ -17,6 +18,9 @@ class ItemsController < ApplicationController
     end
   end
 
+  def show
+  end
+
   private
 
   def item_params
@@ -28,5 +32,9 @@ class ItemsController < ApplicationController
 
   def logged_in_user?
     return redirect_to new_user_session_path unless user_signed_in?
+  end
+
+  def set_item
+    @item = Item.find(params[:id])
   end
 end

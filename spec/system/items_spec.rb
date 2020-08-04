@@ -1,15 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe 'Items', type: :system do
-  before do
-    @user = FactoryBot.create(:user)
-  end
+  let(:user) { FactoryBot.create(:user) }
+  let!(:order) { FactoryBot.create(:order) }
 
   describe '商品出品機能' do
+    before do
+      sign_in(user)
+      visit new_item_path
+    end
     context '出品が失敗した時' do
       it '送る値が空のため、メッセージの送信に失敗する' do
-        sign_in(@user)
-        visit new_item_path
         expect do
           find("input[name='commit']").click
         end.to change { Item.count }.by(0)
@@ -19,8 +20,6 @@ RSpec.describe 'Items', type: :system do
 
     context '出品が成功した時' do
       it '出品に成功するとトップページへ遷移する' do
-        sign_in(@user)
-        visit new_item_path
         image_path = Rails.root.join('public/images/test_image.jpg')
         attach_file('item[image]', image_path)
         fill_in 'item_name', with: '商品名'
@@ -40,18 +39,56 @@ RSpec.describe 'Items', type: :system do
   end
 
   describe '商品一覧表示' do
-    before do
-      @order = FactoryBot.create(:order)
-    end
-
     it 'ログアウト状態でもorderが紐づいているitemにはSoldOutが付与されている' do
       visit root_path
       expect(current_path).to eq root_path
       within('.item-lists') do
-        expect(page).to have_content @order.item.price
-        expect(page).to have_content @order.item.name
+        expect(page).to have_content order.item.price
+        expect(page).to have_content order.item.name
         expect(page).to have_selector("img[src$='test_image.jpg']")
         expect(page).to have_css('.sold-out')
+      end
+    end
+  end
+
+  describe '商品詳細表示' do
+    it '商品の詳細情報が表示されている' do
+      visit item_path(order.item)
+      expect(page).to have_content order.item.price
+      expect(page).to have_content order.item.name
+      expect(page).to have_selector("img[src$='test_image.jpg']")
+      expect(page).to have_content order.item.description
+      expect(page).to have_content order.item.user.nickname
+      expect(page).to have_content order.item.genre.name
+      expect(page).to have_content order.item.status.name
+      expect(page).to have_content order.item.delivery_fee.name
+      expect(page).to have_content order.item.prefecture.name
+      expect(page).to have_content order.item.shipment.name
+    end
+
+    context 'ログアウト状態の時' do
+      it '削除、編集ページへのリンクは表示されない' do
+        visit item_path(order.item)
+        expect(page).not_to have_content '商品の編集'
+        expect(page).not_to have_content '削除'
+      end
+    end
+    context 'ログイン状態の時' do
+      let(:another_user) { FactoryBot.create(:user) }
+      let(:item) { FactoryBot.create(:item) }
+
+      it '出品したユーザーでないなら、削除、編集ページへのリンクは表示されない' do
+        sign_in(another_user)
+        visit item_path(order.item)
+        expect(page).not_to have_content '商品の編集'
+        expect(page).not_to have_content '削除'
+      end
+
+      it '出品したユーザーなら、削除、編集ページへのリンクが表示される' do
+        sign_in(item.user)
+        visit item_path(item)
+        expect(page).to have_content '商品の編集'
+        expect(page).to have_content '削除'
       end
     end
   end
