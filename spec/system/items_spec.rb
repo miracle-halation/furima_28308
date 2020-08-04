@@ -45,8 +45,8 @@ RSpec.describe 'Items', type: :system do
       FactoryBot.create(:order, item: @item, user: @user)
     end
 
-    it 'orderが紐づいているitemにはSoldOutが付与されている' do
-      sign_in(@user)
+    it 'ログアウト状態でもorderが紐づいているitemにはSoldOutが付与されている' do
+      visit root_path
       expect(current_path).to eq root_path
       within('.item-lists') do
         expect(page).to have_content @item.price
