@@ -39,20 +39,20 @@ RSpec.describe 'Items', type: :system do
     end
   end
 
-  describe "商品一覧表示" do
+  describe '商品一覧表示' do
     before do
       @item = FactoryBot.create(:item, image: fixture_file_upload('public/images/test_image.jpg'))
-      order = FactoryBot.create(:order, item: @item, user: @user)
+      FactoryBot.create(:order, item: @item, user: @user)
     end
 
-    it "orderが紐づいているitemにはSoldOutが付与されている" do
+    it 'orderが紐づいているitemにはSoldOutが付与されている' do
       sign_in(@user)
       expect(current_path).to eq root_path
-      within(".item-lists") do
+      within('.item-lists') do
         expect(page).to have_content @item.price
         expect(page).to have_content @item.name
         expect(page).to have_selector("img[src$='test_image.jpg']")
-        expect(page).to have_css(".sold-out")
+        expect(page).to have_css('.sold-out')
       end
     end
   end
