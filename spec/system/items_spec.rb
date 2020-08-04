@@ -41,16 +41,15 @@ RSpec.describe 'Items', type: :system do
 
   describe '商品一覧表示' do
     before do
-      @item = FactoryBot.create(:item, image: fixture_file_upload('public/images/test_image.jpg'))
-      FactoryBot.create(:order, item: @item, user: @user)
+      @order = FactoryBot.create(:order)
     end
 
     it 'ログアウト状態でもorderが紐づいているitemにはSoldOutが付与されている' do
       visit root_path
       expect(current_path).to eq root_path
       within('.item-lists') do
-        expect(page).to have_content @item.price
-        expect(page).to have_content @item.name
+        expect(page).to have_content @order.item.price
+        expect(page).to have_content @order.item.name
         expect(page).to have_selector("img[src$='test_image.jpg']")
         expect(page).to have_css('.sold-out')
       end

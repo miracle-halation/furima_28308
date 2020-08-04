@@ -8,6 +8,7 @@ FactoryBot.define do
     delivery_fee_id { 2 }
     prefecture_id { 2 }
     shipment_id { 2 }
+    image { Rack::Test::UploadedFile.new('public/images/test_image.jpg')}
     association :user
   end
 end
