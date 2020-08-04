@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   before_action :logged_in_user?, only: [:new, :create]
-  before_action :set_item, only: [:show]
+  before_action :set_item, only: [:show, :edit]
   def index
     @items = Item.includes(:order).with_attached_image.order('created_at DESC')
   end
@@ -19,6 +19,12 @@ class ItemsController < ApplicationController
   end
 
   def show
+  end
+
+  def edit
+  end
+
+  def update
   end
 
   private
