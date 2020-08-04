@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
   before_action :logged_in_user?, only: [:new, :create]
   before_action :set_item, only: [:show, :edit]
+  before_action :item_user?, only: [:edit]
   def index
     @items = Item.includes(:order).with_attached_image.order('created_at DESC')
   end
@@ -42,5 +43,9 @@ class ItemsController < ApplicationController
 
   def set_item
     @item = Item.find(params[:id])
+  end
+
+  def item_user?
+    return redirect_to root_path unless current_user == @item.user
   end
 end
