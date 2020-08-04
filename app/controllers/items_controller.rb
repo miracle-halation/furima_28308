@@ -1,7 +1,8 @@
 class ItemsController < ApplicationController
   before_action :logged_in_user?, only: [:new, :create]
-  before_action :set_item, only: [:show, :edit]
+  before_action :set_item, only: [:show, :edit, :update]
   before_action :item_user?, only: [:edit]
+  before_action :sold_out?, only: [:edit, :update]
   def index
     @items = Item.includes(:order).with_attached_image.order('created_at DESC')
   end
@@ -26,6 +27,11 @@ class ItemsController < ApplicationController
   end
 
   def update
+    if @item.update(item_params)
+      redirect_to item_path
+    else
+      render "edit"
+    end
   end
 
   private
@@ -47,5 +53,9 @@ class ItemsController < ApplicationController
 
   def item_user?
     return redirect_to root_path unless current_user == @item.user
+  end
+
+  def sold_out?
+    return redirect_to root_path unless @item.order.nil?
   end
 end
