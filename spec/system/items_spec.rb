@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Items', type: :system do
-  let(:user) {FactoryBot.create(:user)}
-  let!(:order) {FactoryBot.create(:order)}
+  let(:user) { FactoryBot.create(:user) }
+  let!(:order) { FactoryBot.create(:order) }
 
   describe '商品出品機能' do
     before do
@@ -51,9 +51,8 @@ RSpec.describe 'Items', type: :system do
     end
   end
 
-  describe "商品詳細表示" do
-
-    it "商品の詳細情報が表示されている" do
+  describe '商品詳細表示' do
+    it '商品の詳細情報が表示されている' do
       visit item_path(order.item)
       expect(page).to have_content order.item.price
       expect(page).to have_content order.item.name
@@ -67,29 +66,29 @@ RSpec.describe 'Items', type: :system do
       expect(page).to have_content order.item.shipment.name
     end
 
-    context "ログアウト状態の時" do
-      it "削除、編集ページへのリンクは表示されない" do
+    context 'ログアウト状態の時' do
+      it '削除、編集ページへのリンクは表示されない' do
         visit item_path(order.item)
-        expect(page).not_to have_content "商品の編集"
-        expect(page).not_to have_content "削除"
+        expect(page).not_to have_content '商品の編集'
+        expect(page).not_to have_content '削除'
       end
     end
-    context "ログイン状態の時" do
-      let(:another_user) {FactoryBot.create(:user)}
-      let(:item) {FactoryBot.create(:item)}
-      
-      it "出品したユーザーでないなら、削除、編集ページへのリンクは表示されない" do
+    context 'ログイン状態の時' do
+      let(:another_user) { FactoryBot.create(:user) }
+      let(:item) { FactoryBot.create(:item) }
+
+      it '出品したユーザーでないなら、削除、編集ページへのリンクは表示されない' do
         sign_in(another_user)
         visit item_path(order.item)
-        expect(page).not_to have_content "商品の編集"
-        expect(page).not_to have_content "削除"
+        expect(page).not_to have_content '商品の編集'
+        expect(page).not_to have_content '削除'
       end
 
-      it "出品したユーザーなら、削除、編集ページへのリンクが表示される" do
+      it '出品したユーザーなら、削除、編集ページへのリンクが表示される' do
         sign_in(item.user)
         visit item_path(item)
-        expect(page).to have_content "商品の編集"
-        expect(page).to have_content "削除"
+        expect(page).to have_content '商品の編集'
+        expect(page).to have_content '削除'
       end
     end
   end
