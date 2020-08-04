@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
   before_action :logged_in_user?, only: [:new, :create]
   def index
+    @items = Item.order("created_at DESC")
   end
 
   def new
