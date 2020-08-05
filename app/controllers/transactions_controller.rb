@@ -5,6 +5,7 @@ class TransactionsController < ApplicationController
 	before_action :sold_out?, only: [:index, :create]
 	
 	def index
+		@order = Address.new
 	end
 
 	def create
