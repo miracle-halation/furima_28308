@@ -146,8 +146,7 @@ RSpec.describe 'Items', type: :system do
         expect do
           find_link('削除', href: item_path(order.item)).click
         end.to change { Item.count }.by(0)
-        expect(current_path).to eq root_path
-        expect(page).to have_link order.item.name, href: item_path(order.item)
+        expect(current_path).to eq item_path(order.item)
       end
     end
     context '削除に成功した時' do
