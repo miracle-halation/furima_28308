@@ -135,7 +135,7 @@ RSpec.describe 'Items', type: :system do
   describe '商品削除機能' do
     let(:item) { FactoryBot.create(:item) }
     context '削除に失敗した時' do
-      it '出品者でないユーザーでは削除できず、トップページへ遷移する' do
+      it '出品者でないと削除リンクが存在しない' do
         sign_in(user)
         visit item_path(item)
         expect(page).to have_no_link '削除', href: item_path(item)
