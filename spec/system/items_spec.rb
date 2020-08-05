@@ -138,14 +138,14 @@ RSpec.describe 'Items', type: :system do
       it '出品者でないユーザーでは削除できず、トップページへ遷移する' do
         sign_in(user)
         visit item_path(item)
-        expect(page).to have_no_link "削除", href: item_path(item)
+        expect(page).to have_no_link '削除', href: item_path(item)
       end
     end
     context '削除に成功した時' do
       it '出品者であるなら削除に成功し、トップページへ遷移する' do
         sign_in(item.user)
         visit item_path(item)
-        expect  do
+        expect do
           find_link('削除', href: item_path(item)).click
         end.to change { Item.count }.by(-1)
         expect(current_path).to eq root_path
