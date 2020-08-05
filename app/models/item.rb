@@ -1,5 +1,6 @@
 class Item < ApplicationRecord
   extend ActiveHash::Associations::ActiveRecordExtensions
+  before_destroy :should_not_destroy
   belongs_to_active_hash :genre
   belongs_to_active_hash :status
   belongs_to_active_hash :delivery_fee
@@ -19,5 +20,11 @@ class Item < ApplicationRecord
     validates :delivery_fee_id, numericality: { other_than: 1 }
     validates :prefecture_id, numericality: { other_than: 1 }
     validates :shipment_id, numericality: { other_than: 1 }
+  end
+
+  private
+
+  def should_not_destroy
+    return throw :abort unless order.nil?
   end
 end

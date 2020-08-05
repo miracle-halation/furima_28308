@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
   before_action :logged_in_user?, only: [:new, :create]
-  before_action :set_item, only: [:show, :edit, :update]
-  before_action :item_user?, only: [:edit]
+  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :item_user?, only: [:edit, :destroy]
   before_action :sold_out?, only: [:edit, :update]
   def index
     @items = Item.includes(:order).with_attached_image.order('created_at DESC')
@@ -31,6 +31,14 @@ class ItemsController < ApplicationController
       redirect_to item_path
     else
       render 'edit'
+    end
+  end
+
+  def destroy
+    if @item.destroy
+      redirect_to root_path
+    else
+      render :show
     end
   end
 
