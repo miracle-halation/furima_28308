@@ -92,4 +92,43 @@ RSpec.describe 'Items', type: :system do
       end
     end
   end
+
+  describe '商品編集機能' do
+    let(:item) { FactoryBot.create(:item) }
+
+    context '編集に失敗する時' do
+      it '商品を出品したユーザーでないなら、トップページへ遷移する' do
+        sign_in(order.user)
+        visit edit_item_path(item)
+        expect(current_path).to eq root_path
+      end
+      it '必要な値が空白なら、editページへ遷移してエラー内容が出力されている' do
+        sign_in(item.user)
+        visit edit_item_path(item)
+        fill_in 'item_name', with: ''
+        click_on '変更する'
+        expect(current_path).to eq "/items/#{item.id}"
+        expect(page).to have_content "Name can't be blank"
+      end
+      it 'すでに購入済みであるなら、トップページへ遷移する' do
+        sign_in(order.item.user)
+        visit edit_item_path(order.item)
+        expect(current_path).to eq root_path
+      end
+    end
+
+    context '編集に成功した時' do
+      it '正しい情報なら内容を変更して、詳細ページへ遷移する' do
+        sign_in(item.user)
+        visit edit_item_path(item)
+        fill_in 'item_name', with: '名前を変更します'
+        expect  do
+          find("input[name='commit']").click
+        end.to change { Item.count }.by(0)
+        expect(current_path).to eq item_path(item)
+        expect(page).to have_no_content item.name
+        expect(page).to have_content '名前を変更します'
+      end
+    end
+  end
 end
