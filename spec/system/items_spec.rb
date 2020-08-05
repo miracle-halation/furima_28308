@@ -140,6 +140,15 @@ RSpec.describe 'Items', type: :system do
         visit item_path(item)
         expect(page).to have_no_link '削除', href: item_path(item)
       end
+      it '購入済みだと削除できず、トップページへ遷移する' do
+        sign_in(order.item.user)
+        visit item_path(order.item)
+        expect do
+          find_link('削除', href: item_path(order.item)).click
+        end.to change { Item.count }.by(0)
+        expect(current_path).to eq root_path
+        expect(page).to have_link order.item.name, href: item_path(order.item)
+      end
     end
     context '削除に成功した時' do
       it '出品者であるなら削除に成功し、トップページへ遷移する' do
@@ -149,7 +158,7 @@ RSpec.describe 'Items', type: :system do
           find_link('削除', href: item_path(item)).click
         end.to change { Item.count }.by(-1)
         expect(current_path).to eq root_path
-        expect(page).to have_no_content item.name
+        expect(page).to have_no_link item.name, href: item_path(item)
       end
     end
   end
