@@ -110,6 +110,11 @@ RSpec.describe 'Items', type: :system do
         expect(current_path).to eq "/items/#{item.id}"
         expect(page).to have_content "Name can't be blank"
       end
+      it "すでに購入済みであるなら、トップページへ遷移する" do
+        sign_in(order.item.user)
+        visit edit_item_path(order.item)
+        expect(current_path).to eq root_path
+      end
     end
 
     context '編集に成功した時' do
