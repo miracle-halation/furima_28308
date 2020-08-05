@@ -5,14 +5,26 @@ class TransactionsController < ApplicationController
 	before_action :sold_out?, only: [:index, :create]
 	
 	def index
-		@order = Address.new
+		@order = OrderAddress.new
 	end
 
 	def create
+		@order = OrderAddress.new(order_params)
+		if @order.valid?
+			@order.save
+			redirect_to root_path
+		else
+			render 'index'
+		end
 	end
 
 	private
 
+	def order_params
+		params.require(:order_address)
+					.permit(:postal_code, :prefecture_id, :city, :house_number, :building_name, :phone_number)
+					.merge(item_id: @item.id, user_id: current_user.id)
+	end
 
   def logged_in_user?
     return redirect_to new_user_session_path unless user_signed_in?
