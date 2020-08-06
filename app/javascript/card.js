@@ -29,6 +29,8 @@ const pay = () =>{
 				document.getElementById("charge-form").submit();
 				document.getElementById("charge-form").reset();
 			}else{
+				alert(`Error ${status}: クレジットカードの情報が正しくありません`);
+				location.reload();
 			}
 		});
 	});
