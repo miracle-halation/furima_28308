@@ -38,7 +38,7 @@ RSpec.describe 'OrderAddresses', type: :system do
         fill_in 'order_address[phone_number]', with: '09012345678'
         expect  do
           find("input[name='commit']").click
-          sleep 1
+          sleep 2
         end.to change { Order.count }.by(1)
         expect(current_path).to eq root_path
       end
