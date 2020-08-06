@@ -9,10 +9,10 @@ class User < ApplicationRecord
 
   with_options presence: true do
     validates :nickname
-    validates :family_name, format: { with: /\A[ぁ-んァ-ンー-龥]/, message: 'is invalid. Input full-width characters.' }
-    validates :family_name_reading, format: { with: /\A[ァ-ヶー－]+\z/, message: 'is invalid. Input full-width katakana characters.' }
-    validates :first_name, format: { with: /\A[ぁ-んァ-ンー-龥]/, message: 'is invalid. Input full-width characters.' }
-    validates :first_name_reading, format: { with: /\A[ァ-ヶー－]+\z/, message: 'is invalid. Input full-width katakana characters.' }
+    validates :family_name, format: { with: CONSTANT::FULL_WIDTH_REGEX, message: 'is invalid. Input full-width characters.' }
+    validates :family_name_reading, format: { with: CONSTANT::FULL_WIDTH_KATAKANA_REGEX, message: 'is invalid. Input full-width katakana characters.' }
+    validates :first_name, format: { with: CONSTANT::FULL_WIDTH_REGEX, message: 'is invalid. Input full-width characters.' }
+    validates :first_name_reading, format: { with: CONSTANT::FULL_WIDTH_KATAKANA_REGEX, message: 'is invalid. Input full-width katakana characters.' }
     validates :birthday
   end
   validates :email, format: { with: /\A^\S+@\S+\.\S+$\z/, message: 'is invalid. Input @ character.' }
